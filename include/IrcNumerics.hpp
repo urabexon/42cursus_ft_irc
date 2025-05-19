@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:18:00 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 21:27:29 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:32:19 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,25 @@
 #define DEFAULT_KICK_COMMENT	":Kicked by channel operator"
 #define DELIMITER_LINE          "-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-\r\n"
 
-
-
-
+// クライアント登録直後のウェルカムメッセージ
+#define RPL_WELCOME(client, nick) (":ircserv 001 " + client + " :Welcome to the Internet Relay Network, " + nick + "\r\n")
+// 接続中のサーバ名とバージョン情報
+#define RPL_YOURHOST(client, server, version) (":ircserv 002 " + client + " :Your host is " + server + ", running version " + version + "\r\n")
+// サーバの作成日時情報
+#define RPL_CREATED(client, datetime) (":ircserv 003 " + client + " :This server was created " + datetime + "\r\n")
+// サーバ名とバージョン情報のみ
+#define RPL_MYINFO(client, server, version) (":ircserv 004 " + client + " " + server + " " + version + "\r\n")
+// チャネルの現在のモード情報
+#define RPL_CHANNELMODEIS(client, channel, modestring, modeArgs) (":localhost 324 " + client + " " + channel + " " + modestring + " " + modeArgs + "\r\n")
+// チャネルのトピック未設定状態
+#define RPL_NOTOPIC(client, channel) (":localhost 331 " + client + " #" + channel + " :No topic is set\r\n")
+// チャネルの現在のトピック情報
+#define RPL_TOPIC(client, channel, topic) (":localhost 332 " + client + " #" + channel + " " + topic + "\r\n")
+// 招待リストに登録されているチャネル情報
+#define RPL_INVITING(IRC_PREFIX, client, nick, channel) (IRC_PREFIX + " 341 " + client + " " + nick + " #" + channel + "\r\n")
+// NAMES応答（チャネル参加者一覧）
+#define RPL_NAMREPLY(client, symbol, channel, nicks) (":localhost 353 " + client + " " + symbol + " " + channel + " :" + nicks + "\r\n")
+// NAMES応答の終了通知
+#define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /NAMES list\r\n")
 
 #endif
