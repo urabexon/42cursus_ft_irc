@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 21:48:59 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:50:20 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,3 +29,8 @@ Server::Server(std::string port, std::string password, struct tm *timeinfo) : _s
 
 Server::~Server() {}
 
+// Getter
+std::string &Server::getPassword() { return (_password); }
+std::string &Server::getDateTime() { return (_dateTime); }
+std::map<const int, Client>& Server::getClientList() { return (_clientList); }
+std::map<std::string, Channel>& Server::getChannelList() { return (_channelList); }
