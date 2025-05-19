@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:33 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:04:29 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 22:08:47 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,3 +16,46 @@ Client::Client(int clientFd) : _clientFd(clientFd), _userName(""), _realName("")
 
 Client::~Client() {}
 
+void Client::setUserName(const std::string &userName) { 
+    _userName = userName;
+}
+
+void Client::setRealName(const std::string &realName) {
+    _realName = realName;
+}
+
+void Client::setNickname(const std::string &nickname) {
+    _nickname = nickname;
+}
+
+void Client::setOldNickname(const std::string &oldNickname) {
+    _oldNickname = oldNickname;
+}
+
+void Client::setReadBuf(const std::string &readBuf) {
+    _readBuf = readBuf;
+}
+
+void Client::setSendBuf(const std::string &sendBuf) {
+    _sendBuf = sendBuf;
+}
+
+void Client::setConnexionPassword() {
+    _connexion_password = true;
+}
+
+void Client::incrementNmInfo() {
+    ++_nmInfo;
+}
+
+void Client::setToDeconnect() {
+    _toDeconnect = true;
+}
+
+void Client::setRegistrationDone() {
+    _registrationDone = true;
+}
+
+void Client::resetReadBuf() {
+    _readBuf.clear();
+}
