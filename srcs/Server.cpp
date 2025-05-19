@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 21:53:28 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 22:01:27 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ bool Server::_signal = false;
 
 void Server::signalHandler(int signal) {
 	(void)signal;
+    std::cout << "[Server] Server shutdown..." << std::endl;
+	Server::_signal = true;
 }
 
 void Server::getServerInfo() {
