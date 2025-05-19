@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:34 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/16 01:21:49 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:55:55 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,28 @@ int main(int argc, char **argv) {
 		return (EXIT_FAILURE);
     }
 
-    
+    time_t rawtime;
+    struct tm *timeinfo;
+
+    // 現在時刻の取得し、ローカル時間に変換
+	time(&rawtime);
+	timeinfo = localtime(&rawtime);
+
+    // サーバーの初期化
+	Server ircServer(argv[1], argv[2], timeinfo);
+
+    try {
+        // サーバーの情報を取得
+		ircServer.getServerInfo();
+		// サーバーを起動
+		// サーバーのメインループ
+    } catch(char const*message) {
+        std::cerr << message << std::endl;
+		return (EXIT_FAILURE);
+    } catch(const std::string &message) {
+        std::cerr << message << std::endl;
+		return (EXIT_FAILURE);
+    }
+
     return 0;
 }
