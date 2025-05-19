@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 00:33:46 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 00:35:28 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,10 @@ void Server::launchServer() {
         throw (ERROR_SERVER_SOCKET);
     
     // ソケットをノンブロッキングモードに設定
-    if (fcntl(_serverSockFd, F_SETFL, O_NONBLOCK) == -1)
-        throw (ERROR_SERVER_SETSOCKETOPT);
+    
+    // if (fcntl(_serverSockFd, F_SETFL, O_NONBLOCK) == -1)
+    //     throw (ERROR_SERVER_SETSOCKETOPT);
+
     int flags = fcntl(_serverSockFd, F_GETFL, 0);
     if (flags == -1)
         throw (ERROR_SERVER_SETSOCKETOPT);
