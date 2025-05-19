@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:01:27 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 00:31:05 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,28 @@ void Server::getServerInfo() {
 }
 
 void Server::launchServer() {
+    // ソケットを作成
+    if ((_serverSockFd = socket(_serverInfo->ai_family, _serverInfo->ai_socktype, _serverInfo->ai_protocol)) < 0)
+        throw (ERROR_SERVER_SOCKET);
     
+    // ソケットをノンブロッキングモードに設定
+    if (fcntl(_serverSockFd, F_SETFL, O_NONBLOCK) == -1)
+        throw (ERROR_SERVER_SETSOCKETOPT);
+    int flags = fcntl(_serverSockFd, F_GETFL, 0);
+    if (flags == -1)
+        throw (ERROR_SERVER_SETSOCKETOPT);
+    if (fcntl(_serverSockFd, F_SETFL, flags | O_NONBLOCK) == -1)
+        throw (ERROR_SERVER_SETSOCKETOPT);
+    // ソケットオプション設定
+    int socketOpt = 1;
+	if (setsockopt(_serverSockFd, SOL_SOCKET, SO_REUSEADDR, &socketOpt, sizeof(socketOpt)) < 0)
+		throw (ERROR_SERVER_SETSOCKETOPT);
+    // ソケットにアドレスをバインド
+	if (bind(_serverSockFd, _serverInfo->ai_addr, _serverInfo->ai_addrlen) < 0)
+		throw (ERROR_SERVER_BIND);
+    // 待ち受け状態にする
+	if (listen(_serverSockFd, 10) < 0)
+		throw (ERROR_SERVER_LISTEN);
+    // 取得済みのアドレス情報は、ソケットのバインド後は不要となるため、メモリ解放
+	freeaddrinfo(_serverInfo);
 }
