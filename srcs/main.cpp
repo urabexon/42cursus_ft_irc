@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:34 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 21:55:55 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 22:00:31 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ int main(int argc, char **argv) {
     // 現在時刻の取得し、ローカル時間に変換
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
+
+    // シグナルハンドラ設定
+    signal(SIGINT, Server::signalHandler);
+	signal(SIGQUIT, Server::signalHandler);
+	signal(SIGTERM, Server::signalHandler);
+	signal(SIGPIPE, SIG_IGN);
 
     // サーバーの初期化
 	Server ircServer(argv[1], argv[2], timeinfo);
