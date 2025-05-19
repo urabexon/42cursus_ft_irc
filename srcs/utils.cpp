@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:13 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:31:19 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 23:17:59 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ void addToClientSendBuf(Server *server, int clientFd, std::string message) {
 
 // 指定されたFDに対応するクライアントを取得する関数
 Client &retrieveClient(Server *server, int clientFd) {
-    
+	std::map<const int, Client>& clientList = server->getClientList();
+	std::map<const int, Client>::iterator it = clientList.find(clientFd);
+
+	Client &client = it->second;
+	return (client);
 }
 
 // メッセージ文字列からチャンネル名を抽出する関数
