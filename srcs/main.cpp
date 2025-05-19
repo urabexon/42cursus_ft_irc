@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:34 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:18:52 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 23:29:44 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ int main(int argc, char **argv) {
         // サーバーの情報を取得
 		ircServer.getServerInfo();
 		// サーバーを起動
+        ircServer.launchServer();
 		// サーバーのメインループ
+
     } catch(char const*message) {
         std::cerr << message << std::endl;
 		return (EXIT_FAILURE);
