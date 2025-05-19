@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 00:31:05 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 00:33:46 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,16 @@ void Server::launchServer() {
 		throw (ERROR_SERVER_LISTEN);
     // 取得済みのアドレス情報は、ソケットのバインド後は不要となるため、メモリ解放
 	freeaddrinfo(_serverInfo);
+}
+
+// クライアントにデータを送信する
+void Server::sendServerReply(int clientFd, std::string &message) {
+    std::istringstream iss(message);
+	std::string line;
+
+    // クライアントにデータを送信
+	send(clientFd, message.c_str(), message.size(), 0);
+    // 送信したデータを表示
+	while (getline(iss, line))
+		std::cout << "[Server] " << clientFd << " > " << line << std::endl; 
 }
