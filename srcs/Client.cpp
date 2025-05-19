@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:33 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:08:47 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 22:11:02 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,44 @@ void Client::setRegistrationDone() {
 
 void Client::resetReadBuf() {
     _readBuf.clear();
+}
+
+int Client::getClientFd() {
+    return (_clientFd);
+}
+
+std::string &Client::getUserName() {
+    return (_userName);
+}
+
+std::string &Client::getNickname() {
+    return (_nickname);
+}
+
+std::string &Client::getOldNickname() {
+    return (_oldNickname);
+}
+
+std::string &Client::getReadBuf() {
+    return (_readBuf);
+}
+
+std::string &Client::getSendBuf() {
+    return (_sendBuf);
+}
+
+bool Client::getConnexionPassword() {
+    return (_connexion_password);
+}
+
+int Client::getNmInfo() {
+    return (_nmInfo);
+}
+
+bool Client::getToDeconnect() {
+    return (_toDeconnect);
+}
+
+bool Client::isRegistrationDone() {
+    return (_registrationDone); 
 }
