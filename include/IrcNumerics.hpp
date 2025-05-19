@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:18:00 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 21:32:19 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:34:43 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,22 @@
 #define RPL_NAMREPLY(client, symbol, channel, nicks) (":localhost 353 " + client + " " + symbol + " " + channel + " :" + nicks + "\r\n")
 // NAMES応答の終了通知
 #define RPL_ENDOFNAMES(client, channel) (":localhost 366 " + client + " " + channel + " :End of /NAMES list\r\n")
+// 存在しないニックまたはチャネル
+#define ERR_NOSUCHNICK(client, nickname) (":localhost 401 " + client + " " + nickname + " :No such nick/channel\r\n")
+// 存在しないチャネル名
+#define ERR_NOSUCHCHANNEL(client, channel) (":localhost 403 " + client + " #" + channel + " :No such channel\r\n")
+// 宛先が指定されていない（コマンド名付き）
+#define ERR_NORECIPIENT(client, command) (":localhost 411 " + client + " :No recipient given (" + command + ")\r\n")
+// 送信するテキストが指定されていない
+#define ERR_NOTEXTTOSEND(client) (":localhost 412 " + client + " :No text to send\r\n")
+// 未知のコマンド
+#define ERR_UNKNOWNCOMMAND(client, command) (":localhost 421 " + client + " " + command + " :Unknown command\r\n")
+// MOTDファイルが存在しない
+// #define ERR_NOMOTD(client) (":localhost 422 " + client + " :MOTD File is missing\r\n")
+
+
+
+
+
 
 #endif
