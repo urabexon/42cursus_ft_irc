@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:13 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:23:30 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 22:26:09 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,18 @@ std::string trim(const std::string &s) {
 }
 
 int getCommandType(std::string &cmd) {
+    int	type = 0;
+
+    std::string	cmdList[NUM_OF_CMD] = {
+		"CAP", "INVITE", "JOIN", "KICK", "MODE", "NICK",
+		"PART", "PASS", "PING", "PRIVMSG", "QUIT", "TOPIC", "USER"
+	};
     
+    // コマンドリストからコマンドを検索
+    while (type < NUM_OF_CMD) {
+		if (cmd == cmdList[type])
+			break;
+		type++;
+	}
+	return (type + 1);
 }
