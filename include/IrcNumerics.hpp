@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:18:00 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 21:34:43 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 21:39:27 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,12 +99,62 @@
 #define ERR_NOTEXTTOSEND(client) (":localhost 412 " + client + " :No text to send\r\n")
 // 未知のコマンド
 #define ERR_UNKNOWNCOMMAND(client, command) (":localhost 421 " + client + " " + command + " :Unknown command\r\n")
+
 // MOTDファイルが存在しない
 // #define ERR_NOMOTD(client) (":localhost 422 " + client + " :MOTD File is missing\r\n")
 
+// ニックネームが指定されていない
+#define ERR_NONICKNAMEGIVEN(client) (":localhost 431 " + client + " :No nickname given\r\n")
+// 不正なニックネーム
+#define ERR_ERRONEUSNICKNAME(client, nick) (":localhost 432 " + client + " " + nick + " :Erroneus nickname\r\n")
+// 既に使用中のニックネーム
+#define ERR_NICKNAMEINUSE(client, nick) (":localhost 433 " + client + " " + nick + " :Nickname is already in use\r\n")
 
+// ニックネーム衝突（他サーバとの競合）
+// # define ERR_NICKCOLLISION(client, nick, user, host) (":localhost 436 " + client + " " + nick + " :Nickname collision KILL from " + user + "@" + host + "\r\n")
 
+// 不正なターゲット
+#define ERR_ERRONEUSTARGET(client, target, info) (":localhost 437 " + client + " " + target + " :Erroneous target" + info + "\r\n")
+// 指定されたチャネルに所属していない
+#define ERR_USERNOTINCHANNEL(client, nick, channel) (":localhost 441 " + client + " " + nick + " " + channel + " :They aren't on that channel\r\n")
+// チャネルに参加していない
+#define ERR_NOTONCHANNEL(client, channel) (":localhost 442 " + client + " #" + channel + " :You're not on that channel\r\n")
+// 既にチャネルに参加している
+#define ERR_USERONCHANNEL(client, nick, channel) (":localhost 443 " + client + " " + nick + " #" + channel + " :is already on channel\r\n")
+// クライアントが未登録である
+#define ERR_NOTREGISTERED ":localhost 451  :You have not registered\r\n"
+// パラメータが不足している
+#define ERR_NEEDMOREPARAMS(client, command) (":localhost 461 " + client + " " + command + " :Not enough parameters\r\n")
+// 再登録は許可されていない
+#define ERR_ALREADYREGISTERED(client) (":localhost 462 " + client + " :You may not reregister\r\n")
+// パスワードが一致しない
+#define ERR_PASSWDMISMATCH(client) (":localhost 464 " + client + " :Password incorrect\r\n")
 
+// サーバからBANされているため接続できない
+// # define ERR_YOUREBANNEDCREEP(client) (":localhost 465 " + client + " :You are banned from this server.\r\n")
 
+// チャネルの参加人数上限に達している
+#define ERR_CHANNELISFULL(client, channel) (":localhost 471 " + client + " #" + channel + " :Cannot join channel (+l)\r\n")
+// 未知のモード文字が指定された
+#define ERR_UNKNOWNMODE(client, modechar) (":localhost 472 " + client + " " + modechar + " :is unknown mode char to me\r\n")
+// 招待専用チャネルであるため参加できない
+#define ERR_INVITEONLYCHAN(client, channel) (":localhost 473 " + client + " #" + channel + " :Cannot join channel (+i)\r\n")
+
+// BANによりチャネル参加が拒否されている
+// #define ERR_BANNEDFROMCHAN(client, channel) (":localhost 474 " + client + " " + channel + " :Cannot join channel (+b)\r\n")
+
+// チャネルキーが不正または不足している
+#define ERR_BADCHANNELKEY(client, channel) (":localhost 475 " + client + " #" + channel + " :Cannot join channel (+k)\r\n")
+
+// 不正なチャネル名が指定された
+// #define ERR_BADCHANMASK(channel) (":localhost 476 " + channel + " :Bad Channel Mask\r\n")
+
+// IRCオペレーターとしての権限が不足している
+// #define ERR_NOPRIVILEGES(client) (":localhost 481 " + client + " :Permission Denied- You're not an IRC operator\r\n")
+
+// チャネル管理権限が不足している
+#define ERR_CHANOPRIVSNEEDED(client, channel) (":localhost 482 " + client + " #" + channel + " :You're not channel operator\r\n")
+// チャネルキーが不正な形式である
+#define ERR_INVALIDKEY(client, targetChan) (":localhost 525 " + client + " " + targetChan + " :Key is not well-formed\r\n")
 
 #endif
