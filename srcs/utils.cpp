@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:13 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 23:19:34 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 23:21:54 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ Client &retrieveClient(Server *server, int clientFd) {
 
 // メッセージ文字列からチャンネル名を抽出する関数
 std::string getChannelName(std::string &msgToParse) {
-
+    std::string channelName;
+	size_t i = 0;
+    
+    // チャンネル名の先頭を探す（アルファベット、数字、ハイフン、アンダースコア以外の文字は無視）
+    while (msgToParse[i] && (!isalpha(msgToParse[i])) && (!isdigit(msgToParse[i])) && (msgToParse[i] != '-') && (msgToParse[i] != '_'))
+        i++;
+    
+    // チャンネル名を取得（アルファベット、数字、ハイフン、アンダースコア以外の文字が出るまで）
 }
 
 // 文字列の先頭と末尾の空白（スペース、タブ）を除去する
