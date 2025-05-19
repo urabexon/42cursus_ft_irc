@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 22:22:13 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/19 22:30:26 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/19 22:31:19 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 // クライアントの送信バッファにメッセージを追加する関数
 void addToClientSendBuf(Server *server, int clientFd, std::string message) {
-    
+    Client &client = retrieveClient(server, clientFd);
+	std::string newMessage = client.getSendBuf() + message;
+	client.setSendBuf(newMessage);
 }
 
 // 指定されたFDに対応するクライアントを取得する関数
