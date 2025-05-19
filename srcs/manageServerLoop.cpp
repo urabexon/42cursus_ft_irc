@@ -6,12 +6,19 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 00:46:13 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 01:12:40 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 01:14:21 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include "Command.hpp"
+
+void Server::setServerPollFd(std::vector<pollfd> &pollFds) {
+    pollfd	serverPollFd;
+    serverPollFd.fd = _serverSockFd;
+	serverPollFd.events = POLLIN;
+	pollFds.push_back(serverPollFd);
+}
 
 void Server::manageServerLoop() {
     std::vector<pollfd>		pollFds;
