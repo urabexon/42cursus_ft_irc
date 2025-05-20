@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 18:58:30 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 19:01:55 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,41 @@ void Server::launchServer() {
 	freeaddrinfo(_serverInfo);
 }
 
+// クライアントリストからクライアントFDに対応するクライアントが存在するかチェック
+bool Server::isClientExist(int clientFd) {
+    
+}
+
+// クライアントリストからニックネームに対応するクライアントが存在するかチェック
+bool Server::isClientExist(std::string &nickname) {
+    
+}
+
+// クライアントリストからクライアントのFDに対応するクライアントを取得
+Client *Server::getClient(int clientFd) {
+    
+}
+
+// クライアントリストからニックネームに対応するクライアントのFDを取得
+int Server::getClientFdByNick(std::string &nick) {
+
+}
+
+// クライアントリストからクライアントのFDに対応するニックネームを取得
+std::string Server::getNickname(int clientFd) {
+    
+}
+
+// クライアントリストに追加
+void Server::addClient(int clientFd, std::vector<pollfd> &tmpPollFds) {
+    
+}
+
+// クライアントリストから削除し、ソケットを閉じる
+void Server::deleteClient(std::vector<pollfd> &pollFds, std::vector<pollfd>::iterator &it, int clientFd) {
+
+}
+
 // クライアントにデータを送信する
 void Server::sendServerReply(int clientFd, std::string &message) {
     std::istringstream iss(message);
@@ -101,4 +136,20 @@ void Server::sendServerReply(int clientFd, std::string &message) {
     // 送信したデータを表示
 	while (getline(iss, line))
 		std::cout << "[Server] " << clientFd << " > " << line << std::endl; 
+}
+
+// 以下からチャンネル関連
+// チャンネルを作成し、チャンネルリストに追加
+void Server::addChannel(std::string &channelName) {
+
+}
+
+// チャンネルにクライアントを追加
+void Server::addClientToChannel(std::string &channelName, Client &client) {
+    
+}
+
+// チャンネルが存在するか確認
+bool Server::isChannelExist(std::string &channelName) {
+    
 }
