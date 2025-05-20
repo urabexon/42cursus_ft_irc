@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:33:14 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 09:55:53 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 12:41:20 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,60 @@ void Server::fillClientInfo(Client *client, int clientFd, s_ircCommand cmdInfo) 
 }
 
 void Server::execCommand(int clientFd, s_ircCommand	&cmdInfo) {
+    Client	*client = getClient(clientFd);
+    // 登録処理が完了していない場合
+	if (!client->isRegistrationDone()) {
+        fillClientInfo(client, clientFd, cmdInfo);
+		return ;
+    }
     
+    // コマンドリストからコマンドを検索
+    int	type = getCommandType(cmdInfo.name);
+
+    // コマンドに応じた処理を実行
+	switch (type) {
+        case 1: 
+            break; // CAP
+		case 2:
+            invite(this, clientFd, cmdInfo);
+            break;
+		case 3:
+            join(this, clientFd, cmdInfo);
+            break;
+		case 4:
+            kick(this, clientFd, cmdInfo);
+            break;
+		case 5:
+            mode(this, clientFd, cmdInfo);
+            break;
+		case 6:
+            nick(this, clientFd, cmdInfo);
+            break;
+		case 7:
+            part(this, clientFd, cmdInfo);
+            break;
+		case 8:
+            pass(this, clientFd, cmdInfo);
+            break;
+		case 9:
+            break; //PING
+		case 10:
+            privmsg(this, clientFd, cmdInfo);
+            break;
+		case 11:
+            quit(this, clientFd, cmdInfo);
+            break;
+		case 12:
+            topic(this, clientFd, cmdInfo);
+            break;
+		case 13:
+            user(this, clientFd, cmdInfo);
+            break;
+        // コマンドが見つからなければエラー文を出力して終了
+		default:
+            addToClientSendBuf(this, clientFd, ERR_UNKNOWNCOMMAND(client->getNickname(), cmdInfo.name));
+    }
+
 }
 
 void Server::parseExecCommand(int clientFd, std::string &message) {
