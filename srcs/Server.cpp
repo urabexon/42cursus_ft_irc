@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 01:01:24 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 01:03:05 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,5 +218,11 @@ void Server::addClientToChannel(std::string &channelName, Client &client) {
 
 // チャンネルが存在するか確認
 bool Server::isChannelExist(std::string &channelName) {
-    
+    // チャンネルが存在しない場合、エラー文を出力してfalseを返す
+	std::map<std::string, Channel>::iterator it = _channelList.find(channelName);
+	if (it == _channelList.end()) {
+		std::cerr << ERROR_CHANNEL_NOT_FOUND << channelName << std::endl;
+		return (false);
+	}
+	return (true);
 }
