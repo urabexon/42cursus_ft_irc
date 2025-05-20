@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:11:46 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 18:33:50 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 18:35:42 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,21 @@ int Server::handleClientData(std::vector<pollfd> &pollFds, std::vector<pollfd>::
 
 // クライアントにデータを送信する処理
 int Server::handlePollout(std::vector<pollfd> &pollFds, std::vector<pollfd>::iterator &it, int clientFd) {
-    
+    Client *client = getClient(clientFd);
+	// クライアントが見つからなかった場合、エラー文を出力して何もしないで処理終了
+	if (!client) {
+		std::cerr << ERROR_CLIENT_NOT_FOUND << clientFd << std::endl;
+	} else {
+		// クライアントのメッセージを送信して、バッファをクリアする
+		sendServerReply(clientFd, client->getSendBuf());
+		client->getSendBuf().clear();
+		// クライアントが切断フラグを持っている場合は削除してbreak
+		if (client->getToDeconnect()) {
+			deleteClient(pollFds, it, clientFd);
+			return (1);
+		}
+	}
+	return (EXIT_SUCCESS);
 }
 
 // クライアントにエラーが発生した場合の処理
