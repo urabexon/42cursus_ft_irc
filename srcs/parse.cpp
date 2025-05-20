@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:33:14 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 09:41:18 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 09:54:40 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,37 @@ static void sendClientRegistrationMsg(Server *server, int clientFd, Client *clie
 }
 
 void Server::fillClientInfo(Client *client, int clientFd, s_ircCommand cmdInfo) {
+    // irssiからの"CAP LS"リクエストを無視
+	if (cmdInfo.name == "CAP" && cmdInfo.message.find("LS") != std::string::npos) {
+		// CAP LS に対して空の応答を返す
+		addToClientSendBuf(this, clientFd, "CAP * LS :\r\n");
+		return;
+	}
+
+    // パスワード認証が完了していない場合
+	if (!client->getConnexionPassword()) {
+		if (cmdInfo.name != "PASS")
+			addToClientSendBuf(this, clientFd, ERR_PASS_AUTH_YET);
+		else
+			pass(this, clientFd, cmdInfo);
+		return ;
+	} else {
+        // クライアント情報が全て揃っていない場合、クライアント情報を取得する
+		if (cmdInfo.name != "NICK" && cmdInfo.name != "USER") {
+            addToClientSendBuf(this, clientFd, ERR_NOTREGISTERED);
+        } else {
+            if (cmdInfo.name == "NICK")
+				nick(this, clientFd, cmdInfo);
+			else if (cmdInfo.name == "USER")
+				user(this, clientFd, cmdInfo);
+        }
+        // クライアント情報が全て揃った場合、登録処理を行う
+        if (client->getNmInfo() == 3 && client->isRegistrationDone() == false) {
+			sendClientRegistrationMsg(this, clientFd, client);
+			client->setRegistrationDone();
+		}
+		return ;
+    }
+
     
 }
