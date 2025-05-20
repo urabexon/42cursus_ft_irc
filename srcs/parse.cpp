@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:33:14 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 12:41:20 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 12:43:25 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,5 +181,19 @@ void Server::execCommand(int clientFd, s_ircCommand	&cmdInfo) {
 }
 
 void Server::parseExecCommand(int clientFd, std::string &message) {
-    
+    std::vector<std::string>	cmds;
+
+    // 改行毎にメッセージを分割してコマンドリストに格納
+	splitCommandLine(message, cmds);
+    // コマンドリストを順番に処理
+	std::vector<std::string>::iterator cmdIt = cmds.begin();
+    for ( ; cmdIt != cmds.end(); ++cmdIt) {
+        s_ircCommand cmdInfo;
+        
+        // コマンド解析
+        if (parseCommand(*cmdIt, cmdInfo) == EXIT_FAILURE)
+            continue;
+        // コマンド実行
+		execCommand(clientFd, cmdInfo);
+    }
 }
