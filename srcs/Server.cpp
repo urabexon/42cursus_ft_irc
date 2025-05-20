@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 00:49:51 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 00:50:38 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,10 @@ int Server::getClientFdByNick(std::string &nick) {
 
 // クライアントリストからクライアントのFDに対応するニックネームを取得
 std::string Server::getNickname(int clientFd) {
-    
+    std::map<const int, Client>::iterator it = _clientList.find(clientFd);
+	if (it == _clientList.end())
+		return ("");
+	return (it->second.getNickname());
 }
 
 // クライアントリストに追加
