@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:33:14 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 09:30:33 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 09:41:18 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,15 @@ static int parseCommand(std::string &cmdLine, s_ircCommand &cmdInfo) {
     return (EXIT_SUCCESS);
 }
 
+static void sendClientRegistrationMsg(Server *server, int clientFd, Client *client) {
+    addToClientSendBuf(server, clientFd, DELIMITER_LINE);
+	addToClientSendBuf(server, clientFd, RPL_WELCOME(client->getNickname(), client->getNickname()));
+	addToClientSendBuf(server, clientFd, RPL_YOURHOST(client->getNickname(), "ircserv", "1.0"));
+	addToClientSendBuf(server, clientFd, RPL_CREATED(client->getNickname(), server->getDateTime()));
+	addToClientSendBuf(server, clientFd, RPL_MYINFO(client->getNickname(), "ircserv", "1.0"));
+	addToClientSendBuf(server, clientFd, DELIMITER_LINE);
+}
+
+void Server::fillClientInfo(Client *client, int clientFd, s_ircCommand cmdInfo) {
+    
+}
