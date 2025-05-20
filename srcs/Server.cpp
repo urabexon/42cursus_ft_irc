@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 00:50:38 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 00:51:47 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,18 @@ std::string Server::getNickname(int clientFd) {
 
 // クライアントリストに追加
 void Server::addClient(int clientFd, std::vector<pollfd> &tmpPollFds) {
-    
+    pollfd	clientPollFd;
+	Client	newClient(clientFd);
+
+	// クライアントが送受信できるように設定し、tmpPollFdsに格納
+	clientPollFd.fd = clientFd;
+    // 送受信
+	clientPollFd.events = POLLIN | POLLOUT;
+	tmpPollFds.push_back(clientPollFd);
+
+	// クライアントリストに追加
+	_clientList.insert(std::pair<int, Client>(clientFd, newClient));
+	std::cout << SERVER_ADD_CLIENT << clientFd << std::endl;
 }
 
 // クライアントリストから削除し、ソケットを閉じる
