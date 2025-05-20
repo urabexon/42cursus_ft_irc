@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:33:14 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 09:27:28 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 09:30:33 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,17 @@
 #include "Command.hpp"
 
 static void splitCommandLine(std::string &message, std::vector<std::string> &cmds) {
-    
+    // 改行コードを"\r\n"から"\n"に変換
+	std::string::size_type pos = 0;
+    while ((pos = message.find("\r\n", pos)) != std::string::npos) {
+		message.replace(pos, 2, "\n");
+		pos += 1;
+	}
+    // メッセージを１行ずつ分割してコマンドリストに格納
+	std::istringstream	iss(message);
+	std::string			line;
+    while (std::getline(iss, line, '\n'))
+		cmds.push_back(line);
 }
 
 // 処理例
