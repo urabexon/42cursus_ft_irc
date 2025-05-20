@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 00:54:10 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 01:03:05 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,15 +186,43 @@ void Server::sendServerReply(int clientFd, std::string &message) {
 // 以下からチャンネル関連
 // チャンネルを作成し、チャンネルリストに追加
 void Server::addChannel(std::string &channelName) {
-
+    // すでにチャンネルが存在する場合、エラー文を出力して何もしないで処理終了
+	std::map<std::string, Channel>::iterator it = _channelList.find(channelName);
+	if (it != _channelList.end()) {
+		std::cerr << ERROR_CHANNEL_EXIST << channelName << std::endl;
+		return ;
+	}
+	
+	// チャンネルを作成し、チャンネルリストに追加
+	Channel channel(channelName);
+	_channelList.insert(std::make_pair(channelName, channel));
 }
 
 // チャンネルにクライアントを追加
 void Server::addClientToChannel(std::string &channelName, Client &client) {
-    
+    // チャンネルが存在しない場合、エラー文を出力して何もしないで処理終了
+	std::map<std::string, Channel>::iterator it = _channelList.find(channelName);
+	if (it == _channelList.end()) {
+		std::cerr << ERROR_CHANNEL_NOT_FOUND << channelName << std::endl;
+		return ;
+	}
+	// クライアントがすでにチャンネルに参加している場合、エラー文を出力して何もしないで処理終了
+	if (it->second.isClientInChannel(client.getClientFd())) {
+		std::cerr << "Error: Client is already in the channel" << std::endl;
+		return ;
+	}
+
+	// チャンネルにクライアントを追加
+	it->second.addClientToChannel(client);
 }
 
 // チャンネルが存在するか確認
 bool Server::isChannelExist(std::string &channelName) {
-    
+    // チャンネルが存在しない場合、エラー文を出力してfalseを返す
+	std::map<std::string, Channel>::iterator it = _channelList.find(channelName);
+	if (it == _channelList.end()) {
+		std::cerr << ERROR_CHANNEL_NOT_FOUND << channelName << std::endl;
+		return (false);
+	}
+	return (true);
 }
