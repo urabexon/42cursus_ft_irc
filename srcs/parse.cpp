@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 01:33:14 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 09:54:40 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 09:55:53 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ void Server::fillClientInfo(Client *client, int clientFd, s_ircCommand cmdInfo) 
 		}
 		return ;
     }
+}
 
+void Server::execCommand(int clientFd, s_ircCommand	&cmdInfo) {
+    
+}
+
+void Server::parseExecCommand(int clientFd, std::string &message) {
     
 }
