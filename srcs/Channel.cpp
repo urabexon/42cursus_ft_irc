@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:50:53 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 18:01:00 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 18:04:07 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,3 +121,44 @@ void Channel::addInvitedList(int clientFd) {
     _invitedList.push_back(clientFd);
 }
 
+void Channel::removeClient(int clientFd) {
+	_clientList.erase(clientFd);
+	if (isOperator(clientFd))
+		removeOperator(clientFd);
+	if (isInvited(clientFd))
+		removeInvited(clientFd);
+}
+
+void Channel::removeInvited(int clientFd) {
+	for (std::vector<int>::iterator it = _invitedList.begin(); it != _invitedList.end(); ++it) {
+		if (*it == clientFd) {
+			_invitedList.erase(it);
+			return ;
+		}
+	}
+}
+
+void Channel::removeOperator(int clientFd) {
+	for (std::vector<int>::iterator it = _operatorList.begin(); it != _operatorList.end(); ++it) {
+		if (*it == clientFd) {
+			_operatorList.erase(it);
+			return ;
+		}
+	}
+}
+
+std::string Channel::getClientListString() {
+	std::string clientListString = "";
+	std::map<const int, Client>::iterator it = _clientList.begin();
+	
+	while (it != _clientList.end()) {
+		// チャンネルオペレーターの場合、@をつける
+		if (isOperator(it->first))
+			clientListString += "@";
+		clientListString += it->second.getNickname();
+		++it;
+		if (it != _clientList.end())
+			clientListString += " ";
+	}
+	return (clientListString);
+}
