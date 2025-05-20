@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 18:11:46 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 18:35:42 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 18:51:23 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,5 +113,14 @@ int Server::handlePollout(std::vector<pollfd> &pollFds, std::vector<pollfd>::ite
 
 // クライアントにエラーが発生した場合の処理
 int Server::handlePollerr(std::vector<pollfd> &pollFds, std::vector<pollfd>::iterator &it) {
-    
+    std::cerr << ERROR_SERVER_POLL << it->fd << std::endl;
+	// サーバーにエラーが発生した場合、強制終了
+	if (it->fd == _serverSockFd) {
+		throw (ERROR_SERVER_LISTEN);
+	}
+	// クライアントにエラーが発生した場合、クライアントを削除
+	{
+		deleteClient(pollFds, it, it->fd);
+		return (EXIT_FAILURE);
+	}
 }
