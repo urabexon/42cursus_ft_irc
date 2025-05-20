@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 00:35:28 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 00:54:10 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,21 @@ Server::Server(std::string port, std::string password, struct tm *timeinfo) : _s
 Server::~Server() {}
 
 // Getter
-std::string &Server::getPassword() { return (_password); }
-std::string &Server::getDateTime() { return (_dateTime); }
-std::map<const int, Client>& Server::getClientList() { return (_clientList); }
-std::map<std::string, Channel>& Server::getChannelList() { return (_channelList); }
+std::string &Server::getPassword() {
+    return (_password);
+}
+
+std::string &Server::getDateTime() {
+    return (_dateTime);
+}
+
+std::map<const int, Client>& Server::getClientList() {
+    return (_clientList);
+}
+
+std::map<std::string, Channel>& Server::getChannelList() {
+    return (_channelList);
+}
 
 bool Server::_signal = false;
 
@@ -80,6 +91,86 @@ void Server::launchServer() {
 	freeaddrinfo(_serverInfo);
 }
 
+// クライアントリストからクライアントFDに対応するクライアントが存在するかチェック
+bool Server::isClientExist(int clientFd) {
+    std::map<const int, Client>::iterator it = _clientList.find(clientFd);
+	if (it == _clientList.end())
+		return (false);
+	return (true);
+}
+
+// クライアントリストからニックネームに対応するクライアントが存在するかチェック
+bool Server::isClientExist(std::string &nickname) {
+    std::map<const int, Client>::iterator it = _clientList.begin();
+	while (it != _clientList.end()) {
+		if (it->second.getNickname() == nickname)
+			return (true);
+		++it;
+	}
+	return (false);
+}
+
+// クライアントリストからクライアントのFDに対応するクライアントを取得
+Client *Server::getClient(int clientFd) {
+    std::map<const int, Client>::iterator it = _clientList.find(clientFd);
+	// クライアントが見つからなかった場合、エラー文を出力してNULLを返す
+	if (it == _clientList.end())
+		return (NULL);
+	return (&it->second);
+}
+
+// クライアントリストからニックネームに対応するクライアントのFDを取得
+int Server::getClientFdByNick(std::string &nick) {
+    std::map<const int, Client>::iterator it = _clientList.begin();
+	while (it != _clientList.end()) {
+		if (it->second.getNickname() == nick)
+			return (it->first);
+		++it;
+	}
+	return (-1);
+}
+
+// クライアントリストからクライアントのFDに対応するニックネームを取得
+std::string Server::getNickname(int clientFd) {
+    std::map<const int, Client>::iterator it = _clientList.find(clientFd);
+	if (it == _clientList.end())
+		return ("");
+	return (it->second.getNickname());
+}
+
+// クライアントリストに追加
+void Server::addClient(int clientFd, std::vector<pollfd> &tmpPollFds) {
+    pollfd	clientPollFd;
+	Client	newClient(clientFd);
+
+	// クライアントが送受信できるように設定し、tmpPollFdsに格納
+	clientPollFd.fd = clientFd;
+    // 送受信
+	clientPollFd.events = POLLIN | POLLOUT;
+	tmpPollFds.push_back(clientPollFd);
+
+	// クライアントリストに追加
+	_clientList.insert(std::pair<int, Client>(clientFd, newClient));
+	std::cout << SERVER_ADD_CLIENT << clientFd << std::endl;
+}
+
+// クライアントリストから削除し、ソケットを閉じる
+void Server::deleteClient(std::vector<pollfd> &pollFds, std::vector<pollfd>::iterator &it, int clientFd) {
+    std::cout << SERVER_DISCONNECT_CLIENT << clientFd << std::endl;
+
+	// クライアントが参加しているチャンネルからクライアントを削除
+	for (std::map<std::string, Channel>::iterator it = _channelList.begin(); it != _channelList.end(); ++it) {
+		if (it->second.isClientInChannel(clientFd))
+			it->second.removeClient(clientFd);
+	}
+
+	_clientList.erase(clientFd);
+	close(clientFd);
+	pollFds.erase(it);
+
+	std::cout << SERVER_NUMBER_OF_CLIENTS << pollFds.size() - 1 << std::endl;
+}
+
 // クライアントにデータを送信する
 void Server::sendServerReply(int clientFd, std::string &message) {
     std::istringstream iss(message);
@@ -90,4 +181,20 @@ void Server::sendServerReply(int clientFd, std::string &message) {
     // 送信したデータを表示
 	while (getline(iss, line))
 		std::cout << "[Server] " << clientFd << " > " << line << std::endl; 
+}
+
+// 以下からチャンネル関連
+// チャンネルを作成し、チャンネルリストに追加
+void Server::addChannel(std::string &channelName) {
+
+}
+
+// チャンネルにクライアントを追加
+void Server::addClientToChannel(std::string &channelName, Client &client) {
+    
+}
+
+// チャンネルが存在するか確認
+bool Server::isChannelExist(std::string &channelName) {
+    
 }
