@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 12:50:53 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 16:10:56 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/20 16:13:28 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,3 +52,24 @@ void Channel::setMode(bool sign, const char mode) {
 			return ;
     }
 }
+
+const std::string &Channel::getName() const {
+    return (_name);
+}
+
+const std::string &Channel::getTopic() const {
+    return (_topic);
+}
+
+const std::string &Channel::getPassword() const {
+    return (_password);
+}
+
+size_t Channel::getCapacity() const {
+    return (_capacity);
+}
+
+std::map<const int, Client> &Channel::getClientList() {
+    return (_clientList);
+}
+
