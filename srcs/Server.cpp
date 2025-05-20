@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 00:54:10 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 00:59:39 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,16 @@ void Server::sendServerReply(int clientFd, std::string &message) {
 // 以下からチャンネル関連
 // チャンネルを作成し、チャンネルリストに追加
 void Server::addChannel(std::string &channelName) {
-
+    // すでにチャンネルが存在する場合、エラー文を出力して何もしないで処理終了
+	std::map<std::string, Channel>::iterator it = _channelList.find(channelName);
+	if (it != _channelList.end()) {
+		std::cerr << ERROR_CHANNEL_EXIST << channelName << std::endl;
+		return ;
+	}
+	
+	// チャンネルを作成し、チャンネルリストに追加
+	Channel channel(channelName);
+	_channelList.insert(std::make_pair(channelName, channel));
 }
 
 // チャンネルにクライアントを追加
