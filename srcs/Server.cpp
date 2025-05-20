@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 00:51:47 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 00:54:10 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,19 @@ void Server::addClient(int clientFd, std::vector<pollfd> &tmpPollFds) {
 
 // クライアントリストから削除し、ソケットを閉じる
 void Server::deleteClient(std::vector<pollfd> &pollFds, std::vector<pollfd>::iterator &it, int clientFd) {
+    std::cout << SERVER_DISCONNECT_CLIENT << clientFd << std::endl;
 
+	// クライアントが参加しているチャンネルからクライアントを削除
+	for (std::map<std::string, Channel>::iterator it = _channelList.begin(); it != _channelList.end(); ++it) {
+		if (it->second.isClientInChannel(clientFd))
+			it->second.removeClient(clientFd);
+	}
+
+	_clientList.erase(clientFd);
+	close(clientFd);
+	pollFds.erase(it);
+
+	std::cout << SERVER_NUMBER_OF_CLIENTS << pollFds.size() - 1 << std::endl;
 }
 
 // クライアントにデータを送信する
