@@ -6,7 +6,7 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:36 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/21 00:45:14 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 00:46:11 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,13 @@ bool Server::isClientExist(int clientFd) {
 
 // クライアントリストからニックネームに対応するクライアントが存在するかチェック
 bool Server::isClientExist(std::string &nickname) {
-    
+    std::map<const int, Client>::iterator it = _clientList.begin();
+	while (it != _clientList.end()) {
+		if (it->second.getNickname() == nickname)
+			return (true);
+		++it;
+	}
+	return (false);
 }
 
 // クライアントリストからクライアントのFDに対応するクライアントを取得
