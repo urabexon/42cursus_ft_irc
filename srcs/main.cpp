@@ -6,11 +6,11 @@
 /*   By: urabex <urabex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 01:19:34 by urabex            #+#    #+#             */
-/*   Updated: 2025/05/20 00:43:17 by urabex           ###   ########.fr       */
+/*   Updated: 2025/05/21 21:42:40 by urabex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Server.hpp"
+#include "../includes/Server.hpp"
 #include <iostream>
 
 int main(int argc, char **argv) {
